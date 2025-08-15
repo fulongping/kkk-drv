@@ -1,0 +1,152 @@
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# FDCA (Fangzheng Distributed Computing Architecture) Kconfig
+#
+# Copyright (C) 2024 Fangzheng Technology Co., Ltd.
+#
+
+config DRM_FDCA
+	tristate "FDCA Distributed Computing Architecture support"
+	depends on DRM && PCI && X86_64
+	select DRM_GEM
+	select DRM_SCHED
+	select DRM_BUDDY
+	help
+	  Choose this option if you have a Fangzheng FDCA compute accelerator.
+	  
+	  FDCA (Fangzheng Distributed Computing Architecture) is a novel
+	  distributed heterogeneous computing architecture that features:
+	  
+	  * Context-Aware Unit (CAU) for memory-intensive tasks
+	  * Context-Free Unit (CFU) for compute-intensive tasks  
+	  * RISC-V Vector Extension (RVV) support
+	  * Network-on-Chip (NoC) low-latency communication
+	  * Advanced memory management with unified address space
+	  
+	  This driver provides DRM-based userspace interface for compute
+	  acceleration workloads, particularly optimized for AI/ML inference
+	  and training tasks.
+	  
+	  To compile this driver as a module, choose M here: the module
+	  will be called fdca.
+
+config DRM_FDCA_DEBUG
+	bool "Enable FDCA debug support"
+	depends on DRM_FDCA
+	help
+	  Enable debug support for FDCA driver. This includes:
+	  
+	  * Detailed logging and tracing
+	  * Runtime parameter validation
+	  * Performance counters and statistics
+	  * debugfs interface for diagnostics
+	  
+	  This option may impact performance and should generally
+	  be disabled in production builds.
+
+config DRM_FDCA_RVV_SUPPORT
+	bool "Enable RISC-V Vector Extension support"
+	depends on DRM_FDCA
+	default y
+	help
+	  Enable support for RISC-V Vector Extension (RVV) in FDCA driver.
+	  
+	  RVV provides powerful vector processing capabilities including:
+	  * Variable vector length (VLEN) support
+	  * Multiple data element widths (8/16/32/64-bit)
+	  * Advanced vector memory operations
+	  * Vector arithmetic and logical operations
+	  * Vector reduction and permutation operations
+	  
+	  This is highly recommended for optimal performance on FDCA hardware.
+
+config DRM_FDCA_NOC_SUPPORT
+	bool "Enable Network-on-Chip support"
+	depends on DRM_FDCA
+	default y
+	help
+	  Enable Network-on-Chip (NoC) support for low-latency communication
+	  between Context-Aware Unit (CAU) and Context-Free Unit (CFU).
+	  
+	  NoC features include:
+	  * Mesh topology for scalable communication
+	  * Adaptive routing and congestion control
+	  * Quality-of-Service (QoS) management
+	  * Real-time performance monitoring
+	  
+	  Required for optimal performance in distributed computing workloads.
+
+config DRM_FDCA_POWER_MANAGEMENT
+	bool "Enable advanced power management"
+	depends on DRM_FDCA
+	default y
+	help
+	  Enable advanced power management features including:
+	  
+	  * Dynamic voltage and frequency scaling (DVFS)
+	  * Thermal management and throttling
+	  * Per-unit power gating
+	  * Runtime suspend/resume support
+	  
+	  Recommended for mobile and battery-powered devices.
+
+config DRM_FDCA_MAX_DEVICES
+	int "Maximum number of FDCA devices"
+	depends on DRM_FDCA
+	range 1 64
+	default 8
+	help
+	  Maximum number of FDCA devices that can be supported simultaneously.
+	  
+	  Each device requires additional memory for device state management,
+	  context tracking, and resource allocation. Choose a value appropriate
+	  for your expected system configuration.
+	  
+	  Typical values:
+	  * Single device systems: 1-2
+	  * Development/testing: 4-8  
+	  * High-end servers: 16-32
+	  * Maximum supported: 64
+
+config DRM_FDCA_LARGE_PAGE_SUPPORT
+	bool "Enable large page support"
+	depends on DRM_FDCA
+	default y
+	help
+	  Enable support for large pages (2MB/1GB) in memory management.
+	  
+	  Large pages can significantly improve performance for:
+	  * Large dataset processing
+	  * Reduced TLB pressure
+	  * Better memory locality
+	  * Lower page table overhead
+	  
+	  Recommended for high-performance computing workloads.
+
+config DRM_FDCA_EXPERIMENTAL
+	bool "Enable experimental features"
+	depends on DRM_FDCA
+	help
+	  Enable experimental and development features that may not be
+	  fully stable or tested. These include:
+	  
+	  * Advanced scheduling algorithms
+	  * Experimental synchronization primitives
+	  * Beta hardware features
+	  * Development debugging interfaces
+	  
+	  DO NOT enable in production environments.
+
+config DRM_FDCA_COMPAT
+	bool "Enable legacy compatibility"
+	depends on DRM_FDCA
+	help
+	  Enable compatibility support for older FDCA hardware revisions
+	  and software interfaces.
+	  
+	  This may be required for:
+	  * First-generation FDCA devices
+	  * Legacy application compatibility
+	  * Development and testing with older hardware
+	  
+	  May impact performance and is not recommended for new deployments.
